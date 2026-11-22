@@ -14,7 +14,7 @@ Requires iOS 18. No server, no account; data lives on the phone (SwiftData).
 
 - **Care home**: Astrid's photo as the hero with glowing status points, the care score, what needs attention, odometer and oil stats, and every service item with its life bar.
 - **Coolant guide**: cost (DIY vs shop), "good enough" rounds, the spill-free kit (tap what you own), when to stop and go to a shop, specs.
-- **Guide steps**: 14 steps, each with a 2D view that zooms into the spot on the car, a glass step sheet, and swipe to confirm. The 3D (RealityKit) scene replaces the 2D view in Phase 2 with the same layout.
+- **Guide steps**: 14 steps, each with a 2D view that zooms into the spot on the car, a glass step sheet, and swipe to confirm. Phase 2 adds a 3D scene above the same sheet.
 - **Clean up and log it**: clean-up checklist, then the job is logged, the item's "last done" moves, and reminders are set (check the level tomorrow morning, optional round 2 in about 3 weeks, next due date).
 - **History**: money saved by doing it yourself, upcoming items, the service log, and "log a job" for shop visits or anything without a guide yet.
 - **Car**: specs and the VIN plate (first 3 characters, Face ID reveals the full VIN, stored in the Keychain on this device only).
@@ -24,6 +24,7 @@ Requires iOS 18. No server, no account; data lives on the phone (SwiftData).
 - **Guides 02–04**: oil change (ramps, quick-drain valve, filter bagged), wiper blades, cabin air filter. Each has its kit, cost, steps and clean-up. Unlogged items offer "already done it? log it instead".
 - **Kit list grows with guides**: new kit items are added on launch, so an existing install picks them up.
 - **App icon**: a night-garage tachometer in Brittany Blue with the redline.
+- **3D step scenes** (RealityKit): each step flies the camera to its part on a stylized model of Astrid's front half. The part lights up in Brittany Blue with a pulsing halo, body panels turn to glass (X-ray) when the part is hidden, drag turns the car and pinch zooms. Ramps appear for the oil change. Buttons: recenter, X-ray, and 3D/photo (the 2D photo view stays as a fallback). Reduce Motion cuts the camera moves. The model lives in `Scene/CarRig.swift` and can be swapped for a USDZ of Astrid later; steps only know a `ScenePart`.
 
 ## Design system: Fastback v3, "Night garage" + liquid glass
 
@@ -50,6 +51,7 @@ Dashlight/
   Components/     reusable Fastback components
   Model/          SwiftData models, health logic, guides, seed data
   Features/       Care home, Guide flow, History, Guides, Car
+  Scene/          RealityKit step scenes (car rig, parts, camera)
   Services/       reminders, VIN Keychain vault
 ```
 

@@ -59,7 +59,7 @@ extension Guide {
                 body: "Lay the drop sheet and mat under the front of the car, then set the ramps on top, lined up with the front tires.",
                 minutes: 5,
                 confirm: "Slide when the ramps are set",
-                focus: Spot.floorFront, focusLabel: "Under the front"
+                focus: Spot.floorFront, focusLabel: "Under the front", part: .floor
             ),
             GuideStep(
                 id: 2, phase: .contain,
@@ -68,7 +68,7 @@ extension Guide {
                 caution: "Have someone guide you the first time. Stop if a ramp slides.",
                 minutes: 5,
                 confirm: "Slide when parked and chocked",
-                focus: Spot.frontWheel, focusLabel: "Front tire on the ramp"
+                focus: Spot.frontWheel, focusLabel: "Front tire on the ramp", part: .frontWheel
             ),
             GuideStep(
                 id: 3, phase: .contain,
@@ -76,7 +76,7 @@ extension Guide {
                 body: "Slide the lidded drain pan under the oil pan, slightly behind the drain plug. Oil shoots back as it starts.",
                 minutes: 2,
                 confirm: "Slide when the pan is in place",
-                focus: Spot.oilPan, focusLabel: "Oil pan, drain plug", isHidden: true
+                focus: Spot.oilPan, focusLabel: "Oil pan, drain plug", part: .oilPan, isHidden: true
             ),
             GuideStep(
                 id: 4, phase: .work,
@@ -84,7 +84,7 @@ extension Guide {
                 body: "Open the hood and loosen the oil filler cap. Letting air in makes the oil drain smoothly.",
                 minutes: 1,
                 confirm: "Slide when the cap is loose",
-                focus: Spot.oilCap, focusLabel: "Oil filler cap", isHidden: true
+                focus: Spot.oilCap, focusLabel: "Oil filler cap", part: .oilCap, isHidden: true
             ),
             GuideStep(
                 id: 5, phase: .work,
@@ -93,7 +93,7 @@ extension Guide {
                 caution: "The oil is warm. Keep your arm out of the stream.",
                 minutes: 10,
                 confirm: "Slide when it's down to drips",
-                focus: Spot.oilPan, focusLabel: "Drain plug", isHidden: true
+                focus: Spot.oilPan, focusLabel: "Drain plug", part: .oilPan, isHidden: true
             ),
             GuideStep(
                 id: 6, phase: .work,
@@ -102,7 +102,7 @@ extension Guide {
                 caution: "Snug, not cranked. The pan threads are soft.",
                 minutes: 5,
                 confirm: "Slide when the valve is closed",
-                focus: Spot.oilPan, focusLabel: "Quick-drain valve", isHidden: true
+                focus: Spot.oilPan, focusLabel: "Quick-drain valve", part: .oilPan, isHidden: true
             ),
             GuideStep(
                 id: 7, phase: .work,
@@ -110,7 +110,7 @@ extension Guide {
                 body: "Slip a gallon zip bag up around the oil filter. Unscrew it inside the bag with the filter wrench, let it drop in, and seal the bag.",
                 minutes: 5,
                 confirm: "Slide when the filter is bagged",
-                focus: Spot.oilFilter, focusLabel: "Oil filter", isHidden: true
+                focus: Spot.oilFilter, focusLabel: "Oil filter", part: .oilFilter, isHidden: true
             ),
             GuideStep(
                 id: 8, phase: .work,
@@ -119,7 +119,7 @@ extension Guide {
                 caution: "Check the old gasket came off with the old filter. Two gaskets will leak.",
                 minutes: 3,
                 confirm: "Slide when it's hand-tight",
-                focus: Spot.oilFilter, focusLabel: "Oil filter", isHidden: true
+                focus: Spot.oilFilter, focusLabel: "Oil filter", part: .oilFilter, isHidden: true
             ),
             GuideStep(
                 id: 9, phase: .work,
@@ -127,7 +127,7 @@ extension Guide {
                 body: "Funnel in 4 quarts. Wait a minute, check the dipstick, then add a little at a time until it reads at the full mark.",
                 minutes: 5,
                 confirm: "Slide when it reads full",
-                focus: Spot.dipstick, focusLabel: "Filler and dipstick", isHidden: true
+                focus: Spot.dipstick, focusLabel: "Filler and dipstick", part: .oilCap, isHidden: true
             ),
             GuideStep(
                 id: 10, phase: .work,
@@ -136,7 +136,7 @@ extension Guide {
                 caution: "If the oil light stays on, turn the engine off right away.",
                 minutes: 2,
                 confirm: "Slide when it's dry underneath",
-                focus: Spot.driverSeat, focusLabel: "Start the engine"
+                focus: Spot.driverSeat, focusLabel: "Start the engine", part: .dash
             ),
             GuideStep(
                 id: 11, phase: .work,
@@ -144,7 +144,7 @@ extension Guide {
                 body: "Engine off. Wait 2 minutes, then pull the dipstick, wipe, dip and read it again. Top up if it's below full.",
                 minutes: 3,
                 confirm: "Slide when it reads full",
-                focus: Spot.dipstick, focusLabel: "Dipstick", isHidden: true
+                focus: Spot.dipstick, focusLabel: "Dipstick", part: .dipstick, isHidden: true
             ),
             GuideStep(
                 id: 12, phase: .work,
@@ -152,7 +152,7 @@ extension Guide {
                 body: "Take the chocks out, then back slowly down off the ramps. Look at the mat where the car sat: it should be clean.",
                 minutes: 3,
                 confirm: "Slide when you're back on the floor",
-                focus: Spot.frontWheel, focusLabel: "Front tire"
+                focus: Spot.frontWheel, focusLabel: "Front tire", part: .frontWheel
             )
         ],
         cleanUp: [
@@ -206,7 +206,7 @@ extension Guide {
                 body: "Fold a thick towel and lay it on the glass where the driver-side wiper arm rests.",
                 minutes: 1,
                 confirm: "Slide when the towel is down",
-                focus: Spot.windshield, focusLabel: "Windshield"
+                focus: Spot.windshield, focusLabel: "Windshield", part: .windshield
             ),
             GuideStep(
                 id: 2, phase: .work,
@@ -214,7 +214,7 @@ extension Guide {
                 body: "Pull the driver-side arm up and away from the glass until it stays up on its own.",
                 minutes: 1,
                 confirm: "Slide when the arm is up",
-                focus: Spot.wiperArm, focusLabel: "Wiper arm"
+                focus: Spot.wiperArm, focusLabel: "Wiper arm", part: .wiperArm
             ),
             GuideStep(
                 id: 3, phase: .work,
@@ -223,7 +223,7 @@ extension Guide {
                 caution: "Hold the arm as you work so it can't snap back.",
                 minutes: 2,
                 confirm: "Slide when it's off",
-                focus: Spot.wiperArm, focusLabel: "Release tab"
+                focus: Spot.wiperArm, focusLabel: "Release tab", part: .wiperArm
             ),
             GuideStep(
                 id: 4, phase: .work,
@@ -231,7 +231,7 @@ extension Guide {
                 body: "Slide the new blade's adapter up onto the hook until it clicks. Tug it to make sure it's locked.",
                 minutes: 2,
                 confirm: "Slide when it clicks",
-                focus: Spot.wiperArm, focusLabel: "Hook"
+                focus: Spot.wiperArm, focusLabel: "Hook", part: .wiperArm
             ),
             GuideStep(
                 id: 5, phase: .work,
@@ -239,7 +239,7 @@ extension Guide {
                 body: "Lower the arm gently onto the towel, then slide the towel out from under it.",
                 minutes: 1,
                 confirm: "Slide when it's down",
-                focus: Spot.windshield, focusLabel: "Windshield"
+                focus: Spot.windshield, focusLabel: "Windshield", part: .windshield
             ),
             GuideStep(
                 id: 6, phase: .work,
@@ -247,7 +247,7 @@ extension Guide {
                 body: "Move the towel over and repeat on the passenger side with the shorter blade.",
                 minutes: 3,
                 confirm: "Slide when both are on",
-                focus: Spot.windshield, focusLabel: "Passenger side"
+                focus: Spot.windshield, focusLabel: "Passenger side", part: .windshield
             ),
             GuideStep(
                 id: 7, phase: .work,
@@ -255,7 +255,7 @@ extension Guide {
                 body: "Ignition on, spray washer fluid and run the wipers. They should clear in clean, quiet sweeps with no streaks or chatter.",
                 minutes: 1,
                 confirm: "Slide when they wipe clean",
-                focus: Spot.driverSeat, focusLabel: "Wiper stalk"
+                focus: Spot.driverSeat, focusLabel: "Wiper stalk", part: .dash
             )
         ],
         cleanUp: [
@@ -306,7 +306,7 @@ extension Guide {
                 body: "Take everything out of the glove box and set it on the seat.",
                 minutes: 1,
                 confirm: "Slide when it's empty",
-                focus: Spot.gloveBox, focusLabel: "Glove box", isHidden: true
+                focus: Spot.gloveBox, focusLabel: "Glove box", part: .gloveBox, isHidden: true
             ),
             GuideStep(
                 id: 2, phase: .work,
@@ -314,7 +314,7 @@ extension Guide {
                 body: "Open it, then squeeze its sides inward or unhook the stops so it swings all the way down.",
                 minutes: 2,
                 confirm: "Slide when it's down",
-                focus: Spot.gloveBox, focusLabel: "Glove box stops", isHidden: true
+                focus: Spot.gloveBox, focusLabel: "Glove box stops", part: .gloveBox, isHidden: true
             ),
             GuideStep(
                 id: 3, phase: .work,
@@ -322,7 +322,7 @@ extension Guide {
                 body: "Find the narrow cover behind the glove box. Unclip it and set it aside.",
                 minutes: 1,
                 confirm: "Slide when it's open",
-                focus: Spot.gloveBox, focusLabel: "Filter door", isHidden: true
+                focus: Spot.gloveBox, focusLabel: "Filter door", part: .gloveBox, isHidden: true
             ),
             GuideStep(
                 id: 4, phase: .work,
@@ -330,7 +330,7 @@ extension Guide {
                 body: "Note which way the airflow arrow points, then slide the old filter straight out. Leaves and dust come with it.",
                 minutes: 1,
                 confirm: "Slide when it's out",
-                focus: Spot.gloveBox, focusLabel: "Cabin filter", isHidden: true
+                focus: Spot.gloveBox, focusLabel: "Cabin filter", part: .gloveBox, isHidden: true
             ),
             GuideStep(
                 id: 5, phase: .work,
@@ -338,7 +338,7 @@ extension Guide {
                 body: "Vacuum out any leaves or grit in the slot and around the floor below it.",
                 minutes: 2,
                 confirm: "Slide when it's clean",
-                focus: Spot.gloveBox, focusLabel: "Filter slot", isHidden: true
+                focus: Spot.gloveBox, focusLabel: "Filter slot", part: .gloveBox, isHidden: true
             ),
             GuideStep(
                 id: 6, phase: .work,
@@ -347,7 +347,7 @@ extension Guide {
                 caution: "Arrow the wrong way and the fan pushes dust straight into the cabin.",
                 minutes: 1,
                 confirm: "Slide when it's seated",
-                focus: Spot.gloveBox, focusLabel: "Cabin filter", isHidden: true
+                focus: Spot.gloveBox, focusLabel: "Cabin filter", part: .gloveBox, isHidden: true
             ),
             GuideStep(
                 id: 7, phase: .work,
@@ -355,7 +355,7 @@ extension Guide {
                 body: "Clip the filter door back on, lift the glove box until the stops catch, and put your things back.",
                 minutes: 2,
                 confirm: "Slide when it's closed",
-                focus: Spot.gloveBox, focusLabel: "Glove box", isHidden: true
+                focus: Spot.gloveBox, focusLabel: "Glove box", part: .gloveBox, isHidden: true
             ),
             GuideStep(
                 id: 8, phase: .work,
@@ -363,7 +363,7 @@ extension Guide {
                 body: "Ignition on, fan on high. Air should blow strong with no rattle and no dusty smell.",
                 minutes: 1,
                 confirm: "Slide when it blows clean",
-                focus: Spot.driverSeat, focusLabel: "Fan controls"
+                focus: Spot.driverSeat, focusLabel: "Fan controls", part: .dash
             )
         ],
         cleanUp: [
