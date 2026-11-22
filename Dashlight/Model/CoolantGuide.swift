@@ -53,7 +53,7 @@ extension Guide {
                 body: "Plastic drop sheet first, absorbent mat on top. Cover the floor under the front of the car, 2 ft past the bumper on each side.",
                 minutes: 5,
                 confirm: "Slide when the floor is covered",
-                focus: Spot.floorFront, focusLabel: "Under the front"
+                focus: Spot.floorFront, focusLabel: "Under the front", part: .floor
             ),
             GuideStep(
                 id: 2, phase: .contain,
@@ -61,7 +61,7 @@ extension Guide {
                 body: "Slide the lidded drain pan (2 gal or more) under the radiator's lower driver-side corner.",
                 minutes: 2,
                 confirm: "Slide when the pan is in place",
-                focus: Spot.petcock, focusLabel: "Radiator, lower corner", isHidden: true
+                focus: Spot.petcock, focusLabel: "Radiator, lower corner", part: .petcock, isHidden: true
             ),
             GuideStep(
                 id: 3, phase: .contain,
@@ -70,7 +70,7 @@ extension Guide {
                 caution: "Keep the tube end below the pan lip the whole time.",
                 minutes: 3,
                 confirm: "Slide when the tube is on",
-                focus: Spot.petcock, focusLabel: "Drain petcock", isHidden: true
+                focus: Spot.petcock, focusLabel: "Drain petcock", part: .petcock, isHidden: true
             ),
             GuideStep(
                 id: 4, phase: .work,
@@ -78,7 +78,7 @@ extension Guide {
                 body: "Open the hood. Find the degas bottle, the coolant reservoir, and note where the level sits.",
                 minutes: 2,
                 confirm: "Slide when you've found it",
-                focus: Spot.degas, focusLabel: "Degas bottle", isHidden: true
+                focus: Spot.degas, focusLabel: "Degas bottle", part: .degas, isHidden: true
             ),
             GuideStep(
                 id: 5, phase: .work,
@@ -87,7 +87,7 @@ extension Guide {
                 caution: "Only on a cold engine. A warm system is under pressure.",
                 minutes: 1,
                 confirm: "Slide when the cap is off",
-                focus: Spot.degas, focusLabel: "Degas cap", isHidden: true
+                focus: Spot.degas, focusLabel: "Degas cap", part: .degas, isHidden: true
             ),
             GuideStep(
                 id: 6, phase: .work,
@@ -96,7 +96,7 @@ extension Guide {
                 caution: "Its exact spot on Astrid is still to verify. If it doesn't match, stop and tell me.",
                 minutes: 2,
                 confirm: "Slide when you see it",
-                focus: Spot.petcock, focusLabel: "Drain petcock", isHidden: true
+                focus: Spot.petcock, focusLabel: "Drain petcock", part: .petcock, isHidden: true
             ),
             GuideStep(
                 id: 7, phase: .work,
@@ -105,7 +105,7 @@ extension Guide {
                 caution: "Keep the tube end below the pan lip. If it pops off, close the petcock first, then refit.",
                 minutes: 10,
                 confirm: "Slide when drained",
-                focus: Spot.petcock, focusLabel: "Drain petcock", isHidden: true
+                focus: Spot.petcock, focusLabel: "Drain petcock", part: .petcock, isHidden: true
             ),
             GuideStep(
                 id: 8, phase: .work,
@@ -114,7 +114,7 @@ extension Guide {
                 caution: "Hand-tight only. The petcock is plastic and cracks if forced.",
                 minutes: 2,
                 confirm: "Slide when it's closed",
-                focus: Spot.petcock, focusLabel: "Drain petcock", isHidden: true
+                focus: Spot.petcock, focusLabel: "Drain petcock", part: .petcock, isHidden: true
             ),
             GuideStep(
                 id: 9, phase: .work,
@@ -122,7 +122,7 @@ extension Guide {
                 body: "Put the lid on the pan. Funnel the old coolant into the empty coolant jugs and label them USED COOLANT.",
                 minutes: 5,
                 confirm: "Slide when it's bottled",
-                focus: Spot.floorFront, focusLabel: "Drain pan"
+                focus: Spot.floorFront, focusLabel: "Drain pan", part: .drainPan
             ),
             GuideStep(
                 id: 10, phase: .work,
@@ -130,7 +130,7 @@ extension Guide {
                 body: "Seat the spill-free funnel on the degas bottle. Pour fresh Motorcraft Orange premix slowly until the funnel is about one-third full.",
                 minutes: 5,
                 confirm: "Slide when the funnel is one-third full",
-                focus: Spot.degas, focusLabel: "Spill-free funnel", isHidden: true
+                focus: Spot.degas, focusLabel: "Spill-free funnel", part: .degas, isHidden: true
             ),
             GuideStep(
                 id: 11, phase: .work,
@@ -139,7 +139,7 @@ extension Guide {
                 caution: "Stay with the car. If the temperature gauge climbs past the middle, turn it off.",
                 minutes: 15,
                 confirm: "Slide after 10 to 15 minutes",
-                focus: Spot.driverSeat, focusLabel: "Heat max, fan low"
+                focus: Spot.driverSeat, focusLabel: "Heat max, fan low", part: .dash
             ),
             GuideStep(
                 id: 12, phase: .work,
@@ -148,7 +148,7 @@ extension Guide {
                 caution: "The hose warms up as the engine runs. Gloves on, squeeze gently.",
                 minutes: 2,
                 confirm: "Slide when bubbles slow",
-                focus: Spot.upperHose, focusLabel: "Upper radiator hose", isHidden: true
+                focus: Spot.upperHose, focusLabel: "Upper radiator hose", part: .upperHose, isHidden: true
             ),
             GuideStep(
                 id: 13, phase: .work,
@@ -156,7 +156,7 @@ extension Guide {
                 body: "When the bubbles stop and the vents blow hot, turn the engine off. Plug the funnel, lift it out and set it in its stand.",
                 minutes: 3,
                 confirm: "Slide when the funnel is out",
-                focus: Spot.degas, focusLabel: "Spill-free funnel", isHidden: true
+                focus: Spot.degas, focusLabel: "Spill-free funnel", part: .degas, isHidden: true
             ),
             GuideStep(
                 id: 14, phase: .work,
@@ -164,7 +164,7 @@ extension Guide {
                 body: "Once it's cool, top up the degas bottle to the MAX line and cap it tight.",
                 minutes: 3,
                 confirm: "Slide when it's capped",
-                focus: Spot.degas, focusLabel: "Degas bottle, MAX line", isHidden: true
+                focus: Spot.degas, focusLabel: "Degas bottle, MAX line", part: .degas, isHidden: true
             )
         ],
         cleanUp: [

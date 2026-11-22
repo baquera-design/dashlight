@@ -1,8 +1,7 @@
 import SwiftUI
 
-/// One guide step: a 2D view that dollies into the spot on the car, and a
-/// glass sheet with the instruction and a swipe to confirm.
-/// The RealityKit 3D scene replaces the 2D view later, same layout.
+/// One guide step: a live 3D scene (or the 2D photo) that dollies to the spot
+/// on the car, and a glass sheet with the instruction and a swipe to confirm.
 struct GuideStepView: View {
     let guide: Guide
     let vehicle: Vehicle
@@ -11,12 +10,18 @@ struct GuideStepView: View {
     let onBack: () -> Void
     let onNext: () -> Void
 
+    @State private var show3D = true
+    @State private var xRay = false
+    @State private var recenterToken = 0
+    @Environment(\.vehicleTheme) private var theme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     private var step: GuideStep { guide.steps[index] }
 
     var body: some View {
         DLScreen {
             VStack(spacing: 0) {
-                StepViewport(imageName: vehicle.heroImageName, step: step)
+                viewport
                     .frame(height: 430)
                 Spacer(minLength: 0)
             }
@@ -59,6 +64,88 @@ struct GuideStepView: View {
                 .padding(.leading, 16)
                 .padding(.top, 8)
         }
+        .overlay(alignment: .topTrailing) {
+            sceneControls
+                .padding(.trailing, 16)
+                .padding(.top, 8)
+        }
+        .onAppear { xRay = step.part.needsXRay }
+        .onChange(of: index) { xRay = step.part.needsXRay }
+    }
+
+    @ViewBuilder
+    private var viewport: some View {
+        if show3D {
+            ZStack(alignment: .bottom) {
+                GuideSceneView(
+                    part: step.part,
+                    xRay: xRay,
+                    showsRamps: guide.kind == .oil,
+                    recenterToken: recenterToken,
+                    reduceMotion: reduceMotion,
+                    accent: UIColor(theme.accent)
+                )
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("3D view: \(step.focusLabel). Drag to turn the car.")
+
+                LinearGradient(colors: [.clear, DL.bg], startPoint: .top, endPoint: .bottom)
+                    .frame(height: 90)
+                    .allowsHitTesting(false)
+
+                partChip
+                    .padding(.bottom, 96)
+            }
+            .transition(.opacity)
+        } else {
+            StepViewport(imageName: vehicle.heroImageName, step: step)
+                .id(index)
+                .transition(.opacity)
+        }
+    }
+
+    private var partChip: some View {
+        HStack(spacing: 6) {
+            Circle().fill(theme.accent).frame(width: 7, height: 7)
+            Text(step.focusLabel)
+                .font(.system(size: 12.5, weight: .semibold))
+            if xRay {
+                Text("X-ray")
+                    .font(.system(size: 11, design: .monospaced))
+                    .foregroundStyle(DL.ink2)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .dlGlass(.control, in: Capsule())
+        .allowsHitTesting(false)
+    }
+
+    private var sceneControls: some View {
+        HStack(spacing: 8) {
+            if show3D {
+                sceneButton(symbol: "viewfinder", label: "Recenter", on: false) {
+                    recenterToken += 1
+                }
+                sceneButton(symbol: "eye.trianglebadge.exclamationmark", label: xRay ? "X-ray on" : "X-ray off", on: xRay) {
+                    xRay.toggle()
+                }
+            }
+            sceneButton(symbol: show3D ? "photo" : "cube", label: show3D ? "Show photo" : "Show 3D", on: false) {
+                withAnimation(reduceMotion ? nil : Motion.standard) { show3D.toggle() }
+            }
+        }
+    }
+
+    private func sceneButton(symbol: String, label: String, on: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(on ? theme.accent : DL.ink)
+                .frame(width: 44, height: 44)
+                .dlGlass(.control, in: Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(label)
     }
 }
 

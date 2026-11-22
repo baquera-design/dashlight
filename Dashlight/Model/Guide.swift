@@ -70,6 +70,8 @@ struct GuideStep: Identifiable {
     var focus: CGPoint
     /// Short label pinned to the focus point.
     var focusLabel: String
+    /// The part the 3D scene frames and highlights.
+    var part: ScenePart = .floor
     /// Hidden from the side view, e.g. under the hood or behind the bumper.
     var isHidden: Bool = false
 }
