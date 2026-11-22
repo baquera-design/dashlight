@@ -4,6 +4,7 @@ import SwiftData
 /// First-launch data for Astrid. Runs once, when there are no vehicles.
 enum SeedData {
     static func seedIfNeeded(_ context: ModelContext) {
+        defer { ensureKit(context) }
         let count = (try? context.fetchCount(FetchDescriptor<Vehicle>())) ?? 0
         guard count == 0 else { return }
 
@@ -46,18 +47,34 @@ enum SeedData {
             record.vehicle = astrid
         }
 
-        let kit: [(String, Double)] = [
-            ("Gloves, eye protection, towels", 15),
-            ("Drop sheet + absorbent mat", 35),
-            ("Lidded drain pan + vinyl tube", 25),
-            ("Spill-free funnel kit", 30),
-            ("2 gal Motorcraft Orange premix", 50)
-        ]
-        for (index, entry) in kit.enumerated() {
-            context.insert(KitItem(name: entry.0, cost: entry.1, sortOrder: index, guideTags: index == 3 || index == 4 ? "coolant" : "coolant,oil"))
-        }
-
         try? context.save()
+    }
+
+    /// The spill-free kit, one list for every guide. New guides add items here;
+    /// anything missing is added on launch, so existing installs pick it up.
+    static let kit: [(name: String, cost: Double, tags: String)] = [
+        ("Gloves, eye protection, towels", 15, "coolant,oil"),
+        ("Drop sheet + absorbent mat", 35, "coolant,oil"),
+        ("Lidded drain pan + vinyl tube", 25, "coolant,oil"),
+        ("Spill-free funnel kit", 30, "coolant"),
+        ("2 gal Motorcraft Orange premix", 50, "coolant"),
+        ("Low-profile ramps + wheel chocks", 60, "oil"),
+        ("Fumoto quick-drain valve (size to verify)", 35, "oil"),
+        ("Oil filter wrench + gallon zip bags", 12, "oil"),
+        ("5 qt 5W-20 + Motorcraft filter", 40, "oil"),
+        ("Wiper blades, pair", 40, "wipers"),
+        ("Cabin air filter", 20, "cabinAir")
+    ]
+
+    static func ensureKit(_ context: ModelContext) {
+        let existing = (try? context.fetch(FetchDescriptor<KitItem>())) ?? []
+        let names = Set(existing.map(\.name))
+        var added = false
+        for (index, entry) in kit.enumerated() where !names.contains(entry.name) {
+            context.insert(KitItem(name: entry.name, cost: entry.cost, sortOrder: index, guideTags: entry.tags))
+            added = true
+        }
+        if added { try? context.save() }
     }
 
     private static func date(_ y: Int, _ m: Int, _ d: Int) -> Date {
