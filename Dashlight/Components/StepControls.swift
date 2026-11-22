@@ -106,56 +106,78 @@ struct DLSwipe: View {
 
     var body: some View {
         GeometryReader { geo in
-            let travel = geo.size.width - knob - inset * 2
-            let progress = travel > 0 ? offset / travel : 0
-
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(LinearGradient(colors: [theme.accent.opacity(0.18), theme.accent.opacity(0.62)], startPoint: .leading, endPoint: .trailing))
-                    .frame(width: offset + knob + inset * 2)
-                    .opacity(offset > 0 ? 1 : 0)
-
-                Text(done ? doneLabel : label)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(done ? DL.ink : DL.ink2)
-                    .opacity(done ? 1 : 1 - progress * 0.8)
-                    .frame(maxWidth: .infinity)
-                    .padding(.leading, 40)
-
-                Color.clear
-                    .frame(width: knob, height: knob)
-                    .dlGlass(.orb, in: Circle())
-                    .overlay {
-                        (done ? DLIcon.check : DLIcon.arrow).image
-                            .font(.system(size: 19, weight: .bold))
-                            .foregroundStyle(FB.black900)
-                    }
-                    .offset(x: inset + offset)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { value in
-                                guard !done else { return }
-                                offset = min(max(0, value.translation.width), travel)
-                            }
-                            .onEnded { _ in
-                                guard !done else { return }
-                                if offset > travel * 0.8 {
-                                    complete(travel: travel)
-                                } else {
-                                    withAnimation(Motion.standard) { offset = 0 }
-                                }
-                            }
-                    )
-            }
-            .frame(height: height)
-            .dlGlass(.card, in: Capsule())
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(done ? doneLabel : label)
-            .accessibilityHint("Confirms this step is done")
-            .accessibilityAddTraits(.isButton)
-            .accessibilityAction { complete(travel: travel) }
+            track(travel: max(0, geo.size.width - knob - inset * 2))
         }
         .frame(height: height)
+    }
+
+    private func track(travel: CGFloat) -> some View {
+        ZStack(alignment: .leading) {
+            fill
+            labelText(progress: travel > 0 ? offset / travel : 0)
+            knobView(travel: travel)
+        }
+        .frame(height: height)
+        .dlGlass(.card, in: Capsule())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(done ? doneLabel : label)
+        .accessibilityHint("Confirms this step is done")
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction { complete(travel: travel) }
+    }
+
+    private var fill: some View {
+        let gradient = LinearGradient(
+            colors: [theme.accent.opacity(0.18), theme.accent.opacity(0.62)],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        let width: CGFloat = offset + knob + inset * 2
+        return Capsule()
+            .fill(gradient)
+            .frame(width: width)
+            .opacity(offset > 0 ? 1 : 0)
+    }
+
+    private func labelText(progress: CGFloat) -> some View {
+        let fade: Double = done ? 1 : 1 - Double(progress) * 0.8
+        return Text(done ? doneLabel : label)
+            .font(.system(size: 15, weight: .semibold))
+            .foregroundStyle(done ? DL.ink : DL.ink2)
+            .opacity(fade)
+            .frame(maxWidth: .infinity)
+            .padding(.leading, 40)
+    }
+
+    private func knobView(travel: CGFloat) -> some View {
+        let icon: DLIcon = done ? .check : .arrow
+        let x: CGFloat = inset + offset
+        return Color.clear
+            .frame(width: knob, height: knob)
+            .dlGlass(.orb, in: Circle())
+            .overlay {
+                icon.image
+                    .font(.system(size: 19, weight: .bold))
+                    .foregroundStyle(FB.black900)
+            }
+            .offset(x: x)
+            .gesture(drag(travel: travel))
+    }
+
+    private func drag(travel: CGFloat) -> some Gesture {
+        DragGesture()
+            .onChanged { value in
+                guard !done else { return }
+                offset = min(max(0, value.translation.width), travel)
+            }
+            .onEnded { _ in
+                guard !done else { return }
+                if offset > travel * 0.8 {
+                    complete(travel: travel)
+                } else {
+                    withAnimation(Motion.standard) { offset = 0 }
+                }
+            }
     }
 
     private func complete(travel: CGFloat) {
