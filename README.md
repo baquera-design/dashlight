@@ -19,6 +19,12 @@ Requires iOS 18. No server, no account; data lives on the phone (SwiftData).
 - **History**: money saved by doing it yourself, upcoming items, the service log, and "log a job" for shop visits or anything without a guide yet.
 - **Car**: specs and the VIN plate (first 3 characters, Face ID reveals the full VIN, stored in the Keychain on this device only).
 
+## Phase 2 so far
+
+- **Guides 02–04**: oil change (ramps, quick-drain valve, filter bagged), wiper blades, cabin air filter. Each has its kit, cost, steps and clean-up. Unlogged items offer "already done it? log it instead".
+- **Kit list grows with guides**: new kit items are added on launch, so an existing install picks them up.
+- **App icon**: a night-garage tachometer in Brittany Blue with the redline.
+
 ## Design system: Fastback v3, "Night garage" + liquid glass
 
 The SwiftUI code mirrors `tokens.css` from the design canvas.

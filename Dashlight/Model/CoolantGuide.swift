@@ -174,7 +174,11 @@ extension Guide {
             "Jugs labeled USED COOLANT, lids tight.",
             "Recheck the level cold tomorrow morning."
         ],
+        finishNote: .init(title: "Floor check", text: "Slide a white paper towel under the radiator. If it comes back clean, you're done."),
         typicalQuarts: 3,
-        isAvailable: true
+        isAvailable: true,
+        specsTitle: "Cooling system",
+        methodChip: "Zero-spill method",
+        heroFocus: CGPoint(x: 0.9, y: 0.55)
     )
 }

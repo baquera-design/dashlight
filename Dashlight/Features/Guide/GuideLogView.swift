@@ -54,7 +54,9 @@ struct GuideLogView: View {
                         }
                     }
 
-                    DLNote(tone: .clean, title: "Floor check", text: "Slide a white paper towel under the radiator. If it comes back clean, you're done.")
+                    if let note = guide.finishNote {
+                        DLNote(tone: .clean, title: note.title, text: note.text)
+                    }
 
                     LogFormView(form: $form)
                 }

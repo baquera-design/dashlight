@@ -11,6 +11,7 @@ struct GuideOverviewView: View {
 
     @Query(sort: \KitItem.sortOrder) private var kit: [KitItem]
     @Environment(\.vehicleTheme) private var theme
+    @State private var loggingPastJob = false
 
     private var guideKit: [KitItem] { kit.filter { $0.isUsed(by: guide.id) } }
     private var stillNeed: Double { guideKit.filter { !$0.owned }.reduce(0) { $0 + $1.cost } }
@@ -31,6 +32,16 @@ struct GuideOverviewView: View {
 
                         DLCompare(diy: guide.cost.diy, shopLow: guide.cost.shopLow, shopHigh: guide.cost.shopHigh, note: guide.cost.note)
 
+                        if health?.status == .unknown {
+                            Button { loggingPastJob = true } label: {
+                                Text("Already done it recently? Log it instead")
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundStyle(theme.accentHi)
+                                    .frame(minHeight: 44)
+                            }
+                            .buttonStyle(.plain)
+                        }
+
                         if guide.kind == .coolant {
                             DLRounds()
                         }
@@ -40,9 +51,11 @@ struct GuideOverviewView: View {
 
                         DLNote(tone: .caution, title: guide.caution.title, text: guide.caution.text)
 
-                        stopCard
+                        if !guide.stopIf.isEmpty {
+                            stopCard
+                        }
 
-                        DLSpecList(title: "Cooling system", rows: specRows)
+                        DLSpecList(title: guide.specsTitle, rows: specRows)
                     }
                     .padding(.horizontal, Space.gutter)
                     .padding(.top, 18)
@@ -51,6 +64,9 @@ struct GuideOverviewView: View {
             }
             .scrollIndicators(.hidden)
             .ignoresSafeArea(edges: .top)
+        }
+        .sheet(isPresented: $loggingPastJob) {
+            LogServiceSheet(vehicle: vehicle, kind: guide.kind)
         }
         .overlay(alignment: .bottom) {
             DLButton(title: "Start guide · \(guide.steps.count) steps", showsArrow: true, action: onStart)
@@ -79,8 +95,8 @@ struct GuideOverviewView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: geo.size.width * 2.2)
                         .brightness(-0.05)
-                        .position(x: geo.size.width * -0.1, y: 230)
-                        .accessibilityLabel("\(vehicle.nickname)'s front end, where the radiator sits behind the grille")
+                        .position(x: geo.size.width * (0.78 - (guide.heroFocus.x - 0.5) * 2.2), y: 230)
+                        .accessibilityHidden(true)
                     LinearGradient(
                         stops: [
                             .init(color: DL.bg.opacity(0.55), location: 0),
@@ -106,7 +122,7 @@ struct GuideOverviewView: View {
                     HStack(spacing: 6) {
                         DLChip(label: "\(guide.minutes) min")
                         DLChip(label: guide.difficulty)
-                        DLChip(label: "Zero-spill method")
+                        DLChip(label: guide.methodChip)
                         if let health, health.status != .ok {
                             DLChip(label: health.value, status: health.status)
                         }
@@ -130,7 +146,7 @@ struct GuideOverviewView: View {
     private var kitSection: some View {
         VStack(alignment: .leading, spacing: 0) {
             DLSectionHeader(
-                title: "Spill-free kit",
+                title: guide.methodChip == "Zero-spill method" ? "Spill-free kit" : "What you need",
                 trailing: stillNeed == 0 ? "You're all set" : "\(Fmt.money(stillNeed)) still to buy"
             )
             Text("Tap what you already have.")

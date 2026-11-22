@@ -20,9 +20,17 @@ struct Guide: Identifiable {
     let specs: [Spec]
     let steps: [GuideStep]
     let cleanUp: [String]
+    /// Shown above "Log it", e.g. the white-towel floor check.
+    var finishNote: Note? = nil
     /// Suggested quarts added, prefilled on the log screen.
     let typicalQuarts: Double?
     let isAvailable: Bool
+    /// Title over the spec list, e.g. "Cooling system".
+    var specsTitle: String = "Specs"
+    /// Third chip on the overview: "Zero-spill method" or "No spill risk".
+    var methodChip: String = "Zero-spill method"
+    /// Spot on the hero photo the overview frames (0...1 of the image).
+    var heroFocus: CGPoint = CGPoint(x: 0.9, y: 0.55)
 
     struct CostCard {
         let diy: Double
@@ -67,18 +75,10 @@ struct GuideStep: Identifiable {
 }
 
 extension Guide {
-    static let all: [Guide] = [.coolant, .placeholder(.oil, 2, "Oil change", 60), .placeholder(.wipers, 3, "Wiper blades", 10), .placeholder(.cabinAir, 4, "Cabin air filter", 10)]
+    static let all: [Guide] = [.coolant, .oilChange, .wiperBlades, .cabinFilter]
 
     static func guide(for kind: MaintenanceKind) -> Guide? {
         all.first { $0.kind == kind && $0.isAvailable }
     }
 
-    private static func placeholder(_ kind: MaintenanceKind, _ number: Int, _ title: String, _ minutes: Int) -> Guide {
-        Guide(
-            id: kind.rawValue, kind: kind, number: number, eyebrow: "Coming next", title: title, minutes: minutes,
-            difficulty: "Beginner", platformTags: ["ford-c1-2.0-gdi"], intro: "", cost: .init(diy: 0, shopLow: 0, shopHigh: 0, note: ""),
-            beforeYouStart: "", stopIf: [], caution: .init(title: "", text: ""), specs: [], steps: [], cleanUp: [],
-            typicalQuarts: nil, isAvailable: false
-        )
-    }
 }
